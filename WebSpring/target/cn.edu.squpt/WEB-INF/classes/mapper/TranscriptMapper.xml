@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.cqupt.dao.ITranscriptDao">
+
+
+    <select id="selectScoreByExaminee" resultType="Transcript">
+        SELECT exam_name AS examName,
+               examinee_id AS examineeId,
+               examinee_name AS examineeName,
+               score
+        FROM transcript
+        WHERE examinee_id = #{examineeId}
+        AND idCard = #{idCard};
+    </select>
+
+    <insert id="insertTranscript" parameterType="java.util.List">
+        INSERT INTO transcript(exam_name,examinee_id,examinee_name,score,idCard)
+        VALUES
+        <foreach collection="list" item="tran" index="index" separator=",">
+        (#{tran.examName},#{tran.examineeId},#{tran.examineeName},#{tran.score},#{tran.idCard})
+        </foreach>
+    </insert>
+
+
+</mapper>

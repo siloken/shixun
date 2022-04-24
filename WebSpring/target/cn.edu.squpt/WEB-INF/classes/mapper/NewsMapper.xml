@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.cqupt.dao.INewsDao">
+
+
+    <insert id="insertNews" parameterType="News">
+        insert into news(title,subtitle,text,admin_id,regional_plate)
+        value (#{title},#{subtitle},#{editorValue},#{adminId},#{regionalPlate});
+    </insert>
+
+    <select id="selectAllNewsTitle" resultType="News">
+        SELECT news_id AS newsId,
+               title,
+               dateTime
+        FROM news
+    </select>
+
+    <select id="selectNewsAll" parameterType="Integer" resultType="News">
+        SELECT title,
+               subtitle,
+               text AS editorValue,
+               dateTime
+        FROM news
+        WHERE news_id=#{newsId}
+    </select>
+
+    <select id="selectAllNewsTitleTop5" resultType="News">
+        SELECT news_id AS newsId,
+               title,
+               dateTime
+        FROM news
+        WHERE regional_plate = 1
+        ORDER BY news_id LIMIT 5;
+    </select>
+
+    <select id="selectAllNewsTitleBottom5" resultType="News">
+        SELECT news_id AS newsId,
+               title,
+               dateTime
+        FROM news
+        WHERE regional_plate = 2
+        ORDER BY news_id LIMIT 5;
+    </select>
+
+    <select id="selectNewsTitleByPage" parameterType="Integer" resultType="News">
+        SELECT news_id AS newsId,
+               title,
+               dateTime
+        FROM news
+        ORDER BY news_id LIMIT #{nodeNewsId},5;
+    </select>
+
+    <select id="selectNewsCount" resultType="Integer">
+        SELECT COUNT(*) AS pageCount FROM news;
+    </select>
+
+
+
+</mapper>

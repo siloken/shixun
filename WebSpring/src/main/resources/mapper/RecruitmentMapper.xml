@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.cqupt.dao.IRecruitmentDao">
+
+
+    <insert id="insertRecruitment" parameterType="Recruitment">
+        INSERT INTO recruitment(company_id,job_title,low_salary,high_salary,
+                                address,edu_background,fullOrPart_time,numOfPeople,
+                                tel,detail)
+        VALUE (#{companyId},#{jobTitle},#{lowSalary},#{highSalary},
+               #{address},#{eduBackground},#{fullOrPartTime},#{numOfPeople},
+               #{tel},#{detail});
+    </insert>
+
+    <select id="selectAllByIsChecked1" resultType="Recruitment">
+        SELECT company_id AS companyId,
+               job_title AS jobTitle,
+               low_salary AS lowSalary,
+               high_salary AS highSalary,
+               address,
+               edu_background AS eduBackground,
+               fullOrPart_time AS fullOrPartTime,
+               numOfPeople,
+               tel,
+               detail,
+               company_name AS `company.companyName`
+        FROM recruitment,company_info
+        WHERE isChecked=1
+        AND company_user_id=company_id;
+    </select>
+
+    <select id="selectAllByIsChecked0" resultType="Recruitment">
+        SELECT recruitment_id AS recruitmentId,
+               company_id AS companyId,
+               job_title AS jobTitle,
+               low_salary AS lowSalary,
+               high_salary AS highSalary,
+               address,
+               edu_background AS eduBackground,
+               fullOrPart_time AS fullOrPartTime,
+               numOfPeople,
+               tel,
+               detail,
+               company_name AS `company.companyName`
+        FROM recruitment,company_info
+        WHERE isChecked=0
+        AND company_user_id=company_id;
+    </select>
+
+    <update id="updateIsCheckedById" parameterType="Integer">
+        UPDATE recruitment
+        SET isChecked=1
+        WHERE recruitment_id=#{recruitmentId};
+    </update>
+
+    <select id="select4AllByIsChecked1" resultType="Recruitment">
+        SELECT job_title AS jobTitle,
+               low_salary AS lowSalary,
+               high_salary AS highSalary,
+               company_name AS `company.companyName`
+        FROM recruitment,company_info
+        WHERE isChecked=1
+        AND company_user_id=company_id
+		ORDER BY recruitment_id LIMIT 0,4;
+    </select>
+
+    <select id="selectAllByIsChecked0AndPage" parameterType="Integer" resultType="Recruitment">
+        SELECT recruitment_id AS recruitmentId,
+               company_id AS companyId,
+               job_title AS jobTitle,
+               low_salary AS lowSalary,
+               high_salary AS highSalary,
+               address,
+               edu_background AS eduBackground,
+               fullOrPart_time AS fullOrPartTime,
+               numOfPeople,
+               tel,
+               detail,
+               company_name AS `company.companyName`
+        FROM recruitment,company_info
+        WHERE isChecked=0
+        AND company_user_id=company_id
+        ORDER BY recruitment_id LIMIT #{recruitmentNodeId},5;
+    </select>
+
+    <select id="countRecruitmentByIsChecked0" resultType="Integer">
+        SELECT COUNT(*) AS pageCount
+        FROM recruitment
+        WHERE isChecked=0;
+    </select>
+
+    <select id="selectAllByIsChecked1AndPage" parameterType="Integer" resultType="Recruitment">
+        SELECT company_id AS companyId,
+               job_title AS jobTitle,
+               low_salary AS lowSalary,
+               high_salary AS highSalary,
+               address,
+               edu_background AS eduBackground,
+               fullOrPart_time AS fullOrPartTime,
+               numOfPeople,
+               tel,
+               detail,
+               company_name AS `company.companyName`
+        FROM recruitment,company_info
+        WHERE isChecked=1
+        AND company_user_id=company_id
+        ORDER BY recruitment_id LIMIT #{recruitmentNodeId},5;
+    </select>
+
+    <select id="countRecruitmentByIsChecked1" resultType="Integer">
+        SELECT COUNT(*) AS pageCount
+        FROM recruitment
+        WHERE isChecked=1;
+    </select>
+
+    <select id="selectAllByUserId" parameterType="Integer" resultType="Recruitment">
+        SELECT isChecked AS recruitmentId,
+               job_title AS jobTitle,
+               low_salary AS lowSalary,
+               high_salary AS highSalary,
+               address,
+               edu_background AS eduBackground,
+               fullOrPart_time AS fullOrPartTime,
+               numOfPeople,
+               tel,
+               detail
+        FROM recruitment
+        WHERE company_id=#{userId};
+    </select>
+
+</mapper>

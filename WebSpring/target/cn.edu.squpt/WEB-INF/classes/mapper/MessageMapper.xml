@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.cqupt.dao.IMessageDao">
+
+
+    <insert id="insertMessage" parameterType="Message">
+        insert into message(message,citizen_id)
+        value (#{message},#{citizen.userId});
+    </insert>
+
+    <select id="selectByIsApproved1" resultType="Message">
+        SELECT message_id AS messageId,
+               message,
+               citizen_name AS `citizen.citizenName`,
+               dateTime_insert AS dateTimeInsert,
+               dateTime_approved AS dateTimeApproved,
+               respond
+        FROM `message`,citizen_info
+        WHERE isApproved=1
+        AND citizen_id=citizen_user_id;
+    </select>
+
+    <select id="selectByIsApproved0" resultType="Message">
+        SELECT message_id AS messageId,
+               message,
+               citizen_name AS `citizen.citizenName`,
+               dateTime_insert AS dateTimeInsert,
+			   age AS `citizen.age`,
+			   sex AS `citizen.sex`
+        FROM `message`,citizen_info
+        WHERE isApproved=0
+        AND citizen_id=citizen_user_id;
+    </select>
+
+    <update id="updateApprovedInfoById" parameterType="Message">
+        UPDATE `service`.`message`
+        SET `isApproved` = 1,`respond` = #{respond},`admin_id` = #{admin.userId}
+        WHERE `message_id` = #{messageId};
+    </update>
+
+    <select id="messageTest" resultType="Message">
+        SELECT message_id AS messageId,
+               message,
+               citizen_name AS `citizen.citizName`,
+               dateTime_insert AS dateTimeInsert,
+			   age AS `citizen.age`,
+			   sex AS `citizen.sex`
+        FROM `message`,citizen_info
+        WHERE isApproved=1
+        AND citizen_id=citizen_user_id;
+    </select>
+
+    <select id="selectAllByIsApproved1AndPage" parameterType="Integer" resultType="Message">
+        SELECT message_id AS messageId,
+               message,
+               citizen_name AS `citizen.citizenName`,
+               dateTime_insert AS dateTimeInsert,
+               dateTime_approved AS dateTimeApproved,
+               respond
+        FROM `message`,citizen_info
+        WHERE isApproved=1
+        AND citizen_id=citizen_user_id
+        ORDER BY message_id LIMIT #{nodeMessageId},5;
+    </select>
+
+    <select id="selectMessageCountByIsApproved1" resultType="Integer">
+        SELECT COUNT(*) AS pageCount
+        FROM message
+        WHERE isApproved=1;
+    </select>
+
+    <select id="selectAllByIsApproved0AndPage" parameterType="Integer" resultType="Message">
+        SELECT message_id AS messageId,
+               message,
+               citizen_name AS `citizen.citizenName`,
+               dateTime_insert AS dateTimeInsert,
+			   age AS `citizen.age`,
+			   sex AS `citizen.sex`
+        FROM `message`,citizen_info
+        WHERE isApproved=0
+        AND citizen_id=citizen_user_id
+        ORDER BY message_id LIMIT #{nodeMessageId},5;
+    </select>
+
+    <select id="selectMessageCountByIsApproved0" resultType="Integer">
+        SELECT COUNT(*) AS pageCount
+        FROM message
+        WHERE isApproved=0;
+    </select>
+
+    <select id="selectAllByUserId" parameterType="Integer" resultType="Message">
+        SELECT isApproved AS messageId,
+               message,
+               citizen_name AS `citizen.citizenName`,
+               dateTime_insert AS dateTimeInsert,
+               dateTime_approved AS dateTimeApproved,
+               respond
+        FROM `message`,citizen_info
+        WHERE citizen_user_id = #{userId}
+        AND citizen_user_id = citizen_id;
+    </select>
+
+</mapper>

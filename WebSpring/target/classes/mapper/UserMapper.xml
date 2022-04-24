@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.cqupt.dao.IUserDao">
+    <!--    <resultMap type="MyUser" id="userResultMap">
+
+        </resultMap>-->
+
+    <select id="selectByNameAndPwd" resultType="String">
+        SELECT password
+		FROM `user`
+        WHERE username=#{username}
+        AND password=#{password};
+    </select>
+
+    <select id="loadUserByUsername" parameterType="String" resultType="MyUser">
+        SELECT 	user_id AS userId,
+				username,
+				`password`,
+				`user`.`role_id` AS roleId,
+				role_name AS roleName,
+				role_name_eng AS roleNameEng
+		FROM `user`,role
+        WHERE username=#{username}
+        And `user`.role_id=role.role_id;
+    </select>
+
+    <update id="updatePassByUsername" parameterType="String">
+        UPDATE `service`.`user`
+        SET `password` = #{password}
+        WHERE `username` = #{username};
+    </update>
+
+</mapper>

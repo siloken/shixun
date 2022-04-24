@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.cqupt.dao.ICitizenDao">
+
+    <insert id="insertCitizen" parameterType="Citizen" statementType="CALLABLE">
+        {call insertCitizen (#{registerName},#{registerPass},#{roleId},#{citizenName},#{sex},#{age},#{isMarried},#{idCard})}
+    </insert>
+
+    <select id="selectMarIdByIdCard" parameterType="String" resultType="Integer">
+        SELECT marriage_id FROM marriage
+        WHERE woman_id=#{idCard}
+        OR  man_id=#{idCard};
+    </select>
+
+    <select id="selectAllById" parameterType="Integer" resultType="Citizen">
+        SELECT username AS registerName,
+               role_name AS roleName,
+               citizen_name AS citizenName,
+               sex,
+               age,
+               isMarried,
+               idCard
+        FROM `user`,role,citizen_info
+        WHERE `user`.user_id = #{userId}
+        AND `user`.user_id = citizen_info.citizen_user_id
+        AND `user`.role_id = role.role_id;
+    </select>
+
+
+</mapper>

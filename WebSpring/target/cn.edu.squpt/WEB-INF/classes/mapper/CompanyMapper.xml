@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.cqupt.dao.ICompanyDao">
+
+
+    <insert id="insertCompany" parameterType="Company" statementType="CALLABLE">
+        {call insertCompany (#{registerName},#{registerPass},#{roleId},#{companyName},#{mainServiceOrProduct},#{mainIndustry})}
+    </insert>
+
+    <select id="selectAllById" parameterType="Integer" resultType="Company">
+        SELECT username AS registerName,
+               role_name AS roleName,
+               company_name AS companyName,
+               mainServiceOrProduct,
+               mainIndustry
+        FROM `user`,role,company_info
+        WHERE `user`.user_id = #{userId}
+        AND `user`.user_id = company_info.company_user_id
+        AND `user`.role_id = role.role_id;
+    </select>
+
+</mapper>

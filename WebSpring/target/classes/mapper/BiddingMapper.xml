@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.cqupt.dao.IBiddingDao">
+
+
+    <insert id="insertBidding" parameterType="Bidding">
+        insert into bidding(title,city,detail,admin_id,func_tel,func_name)
+        value (#{title},#{city},#{detail},#{adminId},#{functionaryTel},#{functionaryName});
+    </insert>
+
+    <select id="selectAllBiddingByIsBid0" resultType="Bidding">
+        SELECT bidding_id AS biddingId,
+               title,
+               city,
+               datetime AS dateTime
+        FROM bidding
+        WHERE isBid=0
+    </select>
+
+    <select id="selectBiddingByBiddingId" parameterType="Integer" resultType="Bidding">
+        SELECT title,
+               city,
+               detail,
+               datetime AS dateTime,
+               func_tel AS functionaryTel,
+               func_name AS functionaryName
+        FROM bidding
+        WHERE bidding_id=#{biddingId}
+    </select>
+
+    <select id="selectAllBiddingByPage" parameterType="Integer" resultType="Bidding">
+        SELECT bidding_id AS biddingId,
+               title,
+               city,
+               datetime AS dateTime
+        FROM bidding
+        ORDER BY bidding_id LIMIT #{biddingNodeId},5;
+    </select>
+
+    <select id="countBidding" resultType="Integer">
+        SELECT COUNT(*)
+        FROM bidding;
+    </select>
+
+
+</mapper>

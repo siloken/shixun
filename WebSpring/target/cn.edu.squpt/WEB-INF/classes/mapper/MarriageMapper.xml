@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.cqupt.dao.IMarriageDao">
+
+
+    <insert id="insertMarriageAppointment" parameterType="Marriage">
+        INSERT INTO marriage_appointment(man_name,man_id,woman_name,woman_id,`date`,`address`,`tel1`,`tel2`)
+        VALUE (#{manName},#{manId},#{womanName},#{womanId},#{date},#{address},#{tel1},#{tel2});
+    </insert>
+
+    <select id="selectAllMarriageAppointment" resultType="Marriage">
+        SELECT man_name AS manName,
+               man_id AS manId,
+               woman_name AS womanName,
+               woman_id AS womanId,
+               `date`,
+               `address`,
+               `tel1`,
+               `tel2`
+        FROM marriage_appointment;
+    </select>
+    
+    <insert id="insertDivorceAppointment" parameterType="Marriage">
+        INSERT INTO divorce_appointment(man_name,man_id,woman_name,woman_id,`date`,`address`,`tel1`,`tel2`)
+        VALUE (#{manName},#{manId},#{womanName},#{womanId},#{date},#{address},#{tel1},#{tel2});
+    </insert>
+
+    <select id="selectAllDivorceAppointment" resultType="Marriage">
+        SELECT man_name AS manName,
+               man_id AS manId,
+               woman_name AS womanName,
+               woman_id AS womanId,
+               `date`,
+               `address`,
+                `tel1`,
+               `tel2`
+        FROM divorce_appointment;
+    </select>
+
+    <select id="selectAllMarriageAppointmentByPage" parameterType="Integer" resultType="Marriage">
+        SELECT man_name AS manName,
+               man_id AS manId,
+               woman_name AS womanName,
+               woman_id AS womanId,
+               `date`,
+               `address`,
+               `tel1`,
+               `tel2`
+        FROM marriage_appointment
+        ORDER BY marriage_appointment_id LIMIT #{nodeId},5;
+    </select>
+
+    <select id="countMarriageAppointment" resultType="Integer">
+        SELECT COUNT(*)
+        FROM marriage_appointment;
+    </select>
+
+    <select id="selectAllDivorceAppointmentByPage" parameterType="Integer" resultType="Marriage">
+        SELECT man_name AS manName,
+               man_id AS manId,
+               woman_name AS womanName,
+               woman_id AS womanId,
+               `date`,
+               `address`,
+                `tel1`,
+               `tel2`
+        FROM divorce_appointment
+        ORDER BY divorce_appointment_id LIMIT #{nodeId},5;
+    </select>
+
+    <select id="countDivorceAppointment" resultType="Integer">
+        SELECT COUNT(*)
+        FROM divorce_appointment;
+    </select>
+
+    <select id="selectAllMarriageAppointmentByUserId" parameterType="Integer" resultType="Marriage">
+        SELECT man_name AS manName,
+               man_id AS manId,
+               woman_name AS womanName,
+               woman_id AS womanId,
+               `date`,
+               `address`,
+                `tel1`,
+               `tel2`
+        FROM marriage_appointment
+        WHERE woman_id = (SELECT idCard FROM citizen_info WHERE citizen_user_id = #{userId})
+        OR  man_id = (SELECT idCard FROM citizen_info WHERE citizen_user_id = #{userId});
+    </select>
+
+    <select id="selectAllDivorceAppointmentByUserId" parameterType="Integer" resultType="Marriage">
+        SELECT man_name AS manName,
+               man_id AS manId,
+               woman_name AS womanName,
+               woman_id AS womanId,
+               `date`,
+               `address`,
+                `tel1`,
+               `tel2`
+        FROM divorce_appointment
+        WHERE woman_id = (SELECT idCard FROM citizen_info WHERE citizen_user_id = #{userId})
+        OR  man_id = (SELECT idCard FROM citizen_info WHERE citizen_user_id = #{userId});
+    </select>
+
+
+</mapper>
